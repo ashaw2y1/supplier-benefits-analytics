@@ -1,0 +1,5 @@
+'use strict';
+const toggle=document.querySelector('.nav-toggle');
+const links=document.querySelector('.nav-links');
+if(toggle&&links)toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));links.classList.toggle('open',open);});
+document.querySelectorAll('.sort-button').forEach(button=>button.addEventListener('click',()=>{const table=button.closest('table');const body=table.tBodies[0];const col=Number(button.dataset.column);const rows=Array.from(body.rows);if(rows.some(r=>!r.cells[col]||r.cells[col].colSpan>1))return;const asc=button.closest('th').getAttribute('aria-sort')!=='ascending';table.querySelectorAll('th').forEach(h=>h.removeAttribute('aria-sort'));button.closest('th').setAttribute('aria-sort',asc?'ascending':'descending');rows.sort((a,b)=>{const x=a.cells[col].dataset.sort;const y=b.cells[col].dataset.sort;const cmp=x!==''&&y!==''&&Number.isFinite(Number(x))&&Number.isFinite(Number(y))?Number(x)-Number(y):x.localeCompare(y);return asc?cmp:-cmp;});rows.forEach(row=>body.appendChild(row));}));
