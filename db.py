@@ -16,7 +16,8 @@ def connect():
         raise RuntimeError('Fixture integrity error')
     conn = sqlite3.connect(DATA.as_uri() + '?mode=ro&immutable=1', uri=True)
     conn.execute('PRAGMA query_only=ON')
-    conn.enable_load_extension(False)
+    if hasattr(conn, 'enable_load_extension'):
+        conn.enable_load_extension(False)
     return conn
 
 def load():
